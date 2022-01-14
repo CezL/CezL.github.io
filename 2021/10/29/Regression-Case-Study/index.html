@@ -1,0 +1,417 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Lecture01:Regression - Case Study | C</title><meta name="keywords" content="相信自己o o"><meta name="author" content="Cez"><meta name="copyright" content="Cez"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RegressionRegression:Output is a scalar!!   Stock Market Forecast      Self-driving Car    Recommendation    Example Application 经典Hung-yi Lee宝可梦  Estimating the Combat Power(CP) of a pokemon after ev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lecture01:Regression - Case Study">
+<meta property="og:url" content="http://example.com/2021/10/29/Regression-Case-Study/index.html">
+<meta property="og:site_name" content="C">
+<meta property="og:description" content="RegressionRegression:Output is a scalar!!   Stock Market Forecast      Self-driving Car    Recommendation    Example Application 经典Hung-yi Lee宝可梦  Estimating the Combat Power(CP) of a pokemon after ev">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-10-29T00:00:58.000Z">
+<meta property="article:modified_time" content="2021-10-29T14:17:28.082Z">
+<meta property="article:author" content="Cez">
+<meta property="article:tag" content="相信自己o o">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg"><link rel="canonical" href="http://example.com/2021/10/29/Regression-Case-Study/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Lecture01:Regression - Case Study',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-29 22:17:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="C" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">C</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Lecture01:Regression - Case Study</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-10-29T00:00:58.000Z" title="Created 2021-10-29 08:00:58">2021-10-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-10-29T14:17:28.082Z" title="Updated 2021-10-29 22:17:28">2021-10-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Lecture01:Regression - Case Study"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a>Regression</h1><p><strong>Regression:Output is a scalar!!</strong></p>
+<ul>
+<li> Stock Market Forecast</li>
+</ul>
+<p>  <img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093607.png" alt="image-20211029080440931"></p>
+<ul>
+<li><p>Self-driving Car </p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093608.png" alt="image-20211029080448435"></p>
+</li>
+<li><p>Recommendation</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093609.png" alt="image-20211029080453640"></p>
+</li>
+</ul>
+<h1 id="Example-Application"><a href="#Example-Application" class="headerlink" title="Example Application"></a>Example Application</h1><blockquote>
+<p>经典Hung-yi Lee宝可梦</p>
+</blockquote>
+<p>Estimating the Combat Power(CP) of a pokemon after evolution</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029080734.png" alt="image-20211029080733259"></p>
+<p> $x表示一只宝可梦，x_{cp}是它的name,x_w是weight,x_h是height,x_{cp}进化前的cp值$。</p>
+<p>输入一个$x$,输出进化后的$cp$值   </p>
+<h1 id="Step1-Model-Function-Set"><a href="#Step1-Model-Function-Set" class="headerlink" title="Step1 Model(Function Set)"></a>Step1 Model(Function Set)</h1><p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093610.png" alt="image-20211029081140466"></p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093611.png" alt="image-20211029081837262"></p>
+<p>假设我们先随便写一个function set：$y=b+w·x_{cp}$  </p>
+<p>其中w and  b  are parameters.(can  be any  value)<br>$$<br>\begin{array}<br>\<br>f_1:y=10.0+9.0·x_{cp}\<br>f_2:y=9.8+9.2·x_{cp}\<br>f_3:y=-0.8-1.2·x_{cp}<br>\…infinite<br>\end{array}<br>$$<br>我们可以有像上面一样无穷多的functin。有一些function显然不太可能是正确的，如$f_3$，这就是我们要靠<code>training data</code>来排除的。</p>
+<p>$形如y=b+\sum w_ix_i$的function set称为<strong>Linear Model</strong>.  </p>
+<blockquote>
+<p>$x_i$:an attribute of input x，叫作<strong>feature</strong></p>
+<p>$w_i$:weight,$b$:bias</p>
+</blockquote>
+<h1 id="Step2-Goodness-of-Function"><a href="#Step2-Goodness-of-Function" class="headerlink" title="Step2 Goodness of Function"></a>Step2 Goodness of Function</h1><p>接下来要做的就是收集training data，来衡量我们function的好坏</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093612.png" alt="image-20211029083122557" style="zoom:33%;" />
+
+<blockquote>
+<p>用上标来表示一个完整的object的编号，例如$x^1$就是第一个data</p>
+<p>用y来表示function的output，用上标来表示一个完整的object的编号；hat表示真实、正确的值；</p>
+<p>因为这里是linear model，output是一个scalar，所以这里的$\hat y^1$是一个数值，未来structured learning可能$y$是一个vector，有$\hat y^1_{1}\ \ \hat y^1_{2} \dots$,下标表示一个object的component.</p>
+</blockquote>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093613.png" alt="image-20211029082102698" style="zoom:50%;" />
+
+
+
+<ul>
+<li><p>Hung-yi Lee的traing data是10 pokemons(因为李老师说抓一只很麻烦hh)。   </p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093614.png" alt="image-20211029082510590" style="zoom:50%;" />
+
+<p>可视化：</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093615.png" alt="image-20211029082605412"></p>
+</li>
+</ul>
+<h2 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h2><p>我们需要一个东西来看看我们找的function有多好或者多不好，所以我们定义一个<strong>Loss function</strong> L,它的input是一个function，output的数值表示我们input的这个function有多不好。</p>
+<ul>
+<li><p>因为f是由b和w决定的，所以$L(f)=L(w,b)$，所以我们就可以说，Loss function就是衡量一组参数b和w的好坏</p>
+<p>我们用training data，即已经获得的data，来代入这个function，就是说如果我们用这个function来预测它进化后的cp值。$\hat y$是真正的数值，二者相减就是估测的误差Estimation error,最后我们把10笔data sum over.<br>$$<br>\displaystyle<br>\sum_{i=1}^{10}(\hat y^n-(b+w·x^i_{cp}))^2<br>$$</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093616.png" alt="image-20211029083621069"></p>
+<ul>
+<li><p>接下来，我们已经定好了我们的Loss function，可以衡量我们function set中每一个function的好坏，那现在我们要做的就是<strong>从function set里面挑选一个最好的function</strong> ，我们用$f^*,w^*,b^*$来表示最好的$f,w,b$。我们看看哪一个function，也就是哪一个b和w可以让Loss最小</p>
+<p>$$<br>\begin{align}<br>f^*&amp;=arg\ \underset{f}min L(f)，即\<br>w^*,b^*&amp; =arg\ \underset{w,b}minL(w,b)\&amp;=arg\ \underset{w,b}min\sum_{i=1}^{10}(\hat y^n-(b+w·x^i_{cp}))^2 \end{align}<br>$$</p>
+</li>
+</ul>
+<p>怎么找到这一组最好的$w，b$呢？我超！$Gradient \ Descent！$</p>
+<p>只要Loss function是可微分的，Gradient Descent都可以拿来处理这样的function，找到比较好的function或参数。</p>
+<h1 id="Step3-Gradient-Descent"><a href="#Step3-Gradient-Descent" class="headerlink" title="Step3 Gradient Descent"></a>Step3 Gradient Descent</h1><h2 id="A-simple-example-with-one-parameter"><a href="#A-simple-example-with-one-parameter" class="headerlink" title="A simple example with one parameter"></a>A simple example with one parameter</h2><p>先从简单的来说：</p>
+<ul>
+<li><p>Consider loss function $L(w)$ with one parameter $w$(假设$L(w)$可微分)：</p>
+<p>$w^*=arg\ \underset{w} minL(w)$</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093617.png" alt="image-20211029085910817"></p>
+<p>我们显然可以一个个试$w$的值，从而找到一个最好的$w$，让loss最小，但是这样做没有任何效率可言。</p>
+<p><strong>Gradient Descent</strong>：</p>
+<ol>
+<li><p>随机选取一个初始的值$w^0$</p>
+</li>
+<li><p>计算$\frac{dL}{dw}|_{w=w^0}$</p>
+</li>
+<li><p>如果计算出来的值小于0，则把$w^0$往右边移动increase w,否则decrease w；在我们这个例子中，我们往右跨一步</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029085151.png" alt="image-20211029085149070" style="zoom: 50%;" />
+
+<blockquote>
+<p>$\eta$被称为<strong>learning rate</strong></p>
+</blockquote>
+<p>我们跨的这一步的大小取决于两件事：</p>
+<ul>
+<li>一是微分值：微分值越大，说明我们在一个越陡峭的地方，所以步长越大；</li>
+<li>二是learning rate，它表明我们今天跨一步，不仅取决于微分值，还取决于它，这是一个我们事先确定的参数；如果learning rate设定的大，那学习的速度就比较快；否则就比较慢。</li>
+</ul>
+</li>
+<li><p>$\frac{dL}{dw}|_{w=w^1}$</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029085638.png" alt="image-20211029085637209" style="zoom:50%;" /></li>
+<li><p>$\dots$many iterations，假设经过T次更新，我们会到Local minima的地方(微分为0)，此时参数就没办法更新了，所以可能找不到global minima；但是这件事在linear regression上是没有这个问题的，它只有global minima，因为loss function是convex的。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029085935.png" alt="image-20211029085934160"></p>
+</li>
+</ol>
+<h2 id="How-about-two-parameters"><a href="#How-about-two-parameters" class="headerlink" title="How about two parameters?"></a>How about two parameters?</h2><p>$$<br> w^*,b^* =arg\underset{w,b}minL(w,b)<br>$$</p>
+<p>其实这和只有一个参数的情形没有什么不同啦</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093618.png" alt="image-20211029090643338"></p>
+<p>$\triangledown L=\begin{bmatrix} \frac{\partial L}{\partial w} \ \frac{\partial L}{\partial b} \end{bmatrix}$就是<strong>梯度Gradient</strong>。   </p>
+<ul>
+<li><p>visualize</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029091055.png" alt="image-20211029091053843"></p>
+</li>
+<li><p>Formulation of $\partial L/\partial w \ \text{and}\  \partial L/\partial b$</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093619.png" alt="image-20211029091554906"></p>
+</li>
+</ul>
+<h1 id="How-is-the-result"><a href="#How-is-the-result" class="headerlink" title="How is the result?"></a>How is the result?</h1><p>经过Gradient Descent，我们找到一组w和b<br>$$<br>y=b+w\cdot x_{cp}<br>b=-188.4,<br>w=2.7<br>$$<br><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093620.png" alt="image-20211029091955048" style="zoom:67%;" /></p>
+<p>Average Error on Training Data:$\displaystyle \frac{1}{10}\sum_{n=1}^{10}e^n=31.9$，但是其实我们真正关心的是在new data(testing data)上的error是多少.于是我们抓来另外10只pokemon</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093621.png" alt="image-20211029092112961" style="zoom:67%;" />
+
+<p>Average Error on Testing Data:$35.0$&gt;Average Error on Training Data ，这肯定是可以接受的，因为Loss就是基于trainng data来计算的。    </p>
+<ul>
+<li><p>如何做的更好呢？我们只能重新设计我们的model：我们看到在CP值很大和很小时，CP值的误差是比较大的。</p>
+<ul>
+<li><p>挑选另外一个model：  $\displaystyle y=b+w_1\cdot x_{cp}+w_2\cdot (x_{cp})^2$</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093622.png" alt="image-20211029092740711"></p>
+</li>
+</ul>
+</li>
+<li><p>我们可以看到此时在training data和testing data上，误差都有所下降。能不能做得更好呢？我们可以试着加$x_{cp}^3$</p>
+<p>$\displaystyle y=b+w_1\cdot x_{cp}+w_2\cdot (x_{cp})^2+w_3\cdot (x_{cp})^3$</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093623.png" alt="image-20211029092718912" style="zoom:67%;" />
+
+<p>​    可以看到此时的误差只下降了一点点</p>
+</li>
+<li><p>继续考虑$x^4$</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093624.png" alt="image-20211029092831037"></p>
+<p>我们换了一个更复杂的model，在traning data上它给我们一个更低的error，但是testing data上的error反而更高了</p>
+</li>
+<li><p>考虑$x^5$</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093625.png" alt="image-20211029092853986"></p>
+</li>
+</ul>
+<h2 id="Model-Selection"><a href="#Model-Selection" class="headerlink" title="Model Selection"></a>Model Selection</h2><p>在Training Data上，我们看到Average Error是越来越小的，这件事情是非常合理的，因为我们每次把Model考虑得更复杂，加高次项的时候，更复杂的Model永远是包含前一个Model的；所以理论上我们考虑得越复杂，次数越高，Error rate在training data上就越低。</p>
+<p>比如$y=b+w_1\cdot x_{cp}+w_2\cdot (x_{cp})^2$，当$w_2=0$时，它就是$y=b+w\cdot x_{cp}$</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029093626.png" alt="image-20211029093208348"></p>
+<ul>
+<li><p>但是事情在Testing data上就不是这样了。(橙色的是training data上的error)</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221537.png" alt="image-20211029210524513" style="zoom:50%;" /></li>
+</ul>
+<p>虽然越复杂的model在training data上能给我们越好的结果，但是它并不一定能够在testing data上给我们好的结果，这件事情就是<strong>Overfitting</strong>。比如本例中的四次式和五次式。    </p>
+<p>所以model不是越复杂越好，我们需要一个最适合的model，比如在本例中，我们选一个三次式的时候，可以给我们一个最低的error。   </p>
+<h2 id="Let’s-collect-more-data"><a href="#Let’s-collect-more-data" class="headerlink" title="Let’s collect more data"></a>Let’s collect more data</h2><p>当我们收集到60只pokemon的时候，我们会发现他们的original CP和CP after evoluation之间有一种奇妙的关系，这种关系显然不是什么一次二次三次式可以描述的；中间有其他的力量(factor)在影响着他们</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221659.png" alt="image-20211029210958142"></p>
+<ul>
+<li><p>what are the hidden factors?</p>
+<p>当我们把pokemon的物种用不同颜色表示出来时，我们就很显然地知道，pokemon的物种也是有影响的。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221703.png" alt="image-20211029211241178"></p>
+<p>所以刚才只考虑original CP显然是不对的，因为pokemon的物种的影响显然是很大的。所以我们刚才的model是不好的。</p>
+</li>
+</ul>
+<h3 id="Back-to-step1-Redesign-the-Model"><a href="#Back-to-step1-Redesign-the-Model" class="headerlink" title="Back to step1. Redesign the Model"></a>Back to step1. Redesign the Model</h3><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221706.png" alt="image-20211029211517556" style="zoom:50%;" />
+
+<ul>
+<li><p>虽然我们把if放到了function里面，但是我们可以把它改写成linear Model：</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221709.png" alt="image-20211029211712872"></p>
+<ul>
+<li>所以如果今天我们的input的$x_s=\text{Pidgey}$，则$y=b_1+w_1\cdot x_{cp}$</li>
+</ul>
+</li>
+<li><p>经过改写，它就变成了Linear Model，可能看着有点不舒服，但是我们可以把$\delta (x_s=\text{Pidgey})x_{cp}、\delta (x_s=\text{Weedle})x_{cp}$等分别当做一个整体看，它就是每一个$x_i$，就是$feature$。</p>
+</li>
+</ul>
+<ul>
+<li><p>结果：</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221712.png" alt="image-20211029212256851" style="zoom:50%;" />
+
+<ul>
+<li><p>这几条线可以把traing data fit得更好，在training data上的average error是3.8</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221714.png" alt="image-20211029212404137" style="zoom:50%;" /></li>
+<li><p>在testing data上fit得也更好，average error是14.3  </p>
+</li>
+</ul>
+</li>
+<li><p>我们看到除了Eevee的预测fit得不是很好，其他物种fit得都还不错，虽然或多或少会有一点偏差，但是可能在产生CP值的时候会有一些random的值，也有可能有其他的factor。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221719.png" alt="image-20211029212635454"></p>
+</li>
+</ul>
+<h3 id="Back-to-step1-Redesign-the-Model-again"><a href="#Back-to-step1-Redesign-the-Model-again" class="headerlink" title="Back to step1.Redesign the Model again"></a>Back to step1.Redesign the Model again</h3><p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029221722.png" alt="image-20211029212752257"></p>
+<p>理论上我们确实得到非常低的Training Error，但是它Overfitting了。</p>
+<p>怎么办呢？如果我们有Domain knowledge的话，我们当然可以知道哪些input可能是没用的，可以delete，但是显然我们并不是大木博士hh，我们用别的方法！</p>
+<ul>
+<li><p><strong>Regularization</strong></p>
+<p>我们redefine一下我们的Loss Function，把一些knowledge放进去，让我们可以找到好的function。假设我们的Model如下：<br>$$<br>\displaystyle<br>\begin{array}{lcl}<br>y=b+\sum{w_ix_i}<br>\<br>L=\sum_n(\hat y-(b+\sum{w_ix_i}))^2+\lambda \sum{w_i^2}<br>\end{array}<br>$$<br>L越小就代表是越好的function，那为什么我们期待一个参数接近0的function呢？当我们加上$\lambda \sum w_i^2$这一项时，我们希望$w_i$越小越好。</p>
+<p>参数值接近0的function，它是比较平滑(smooth)的，当输入有变化的时候，它的output对输入的变化是比较不sensitive的。参数小就可以达到这样的效果。   </p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029213749.png" alt="image-20211029213748408" style="zoom:50%;" />
+
+<ul>
+<li><p>为什么我们喜欢平滑的function？如果我们的input有noise，因为它对输入不敏感，所以noise对function的影响会小一点。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211029214014.png" alt="image-20211029214013756"></p>
+<ul>
+<li>通过上面的图表我们可以看到，在$\lambda$越大的时候，Training data上的eroor会越大，这件事情其实是非常合理的，因为当$\lambda$越大的时候，Loss function就越倾向于考虑$w_i$本身的值而减少考虑我们的error；</li>
+<li>有趣的是虽然Training data上的error越大，但是我们在Testing data上的eroor却反而可能会越小；这个结果也是合理的，我们喜欢平滑的function，它对noise比较不sensitive，所以增加$\lambda $的时候，它的performance会变好，但是如果太平滑的话，极端一点，最平滑的情况是一条水平线，它预测个der。。</li>
+<li>所以我们就需要调整$\lambda$来决定我们function的平滑程度。比如上例中的$\lambda=100$。</li>
+<li>在regularization中并没有加上b，因为bias这一项并不会影响function的平滑程度，仅仅是将function上下移动。所以我们不用考虑bias。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Cez</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/10/29/Regression-Case-Study/">http://example.com/2021/10/29/Regression-Case-Study/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/29/Lecture01-Additional-Regression-Demo/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Lecture01 Additional:Regression Demo</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/28/Install-jupyter-notebook-and-some-toolkits/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Install jupyter notebook and some toolkits</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Cez</div><div class="author-info__description">双子座</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Regression"><span class="toc-number">1.</span> <span class="toc-text">Regression</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Example-Application"><span class="toc-number">2.</span> <span class="toc-text">Example Application</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step1-Model-Function-Set"><span class="toc-number">3.</span> <span class="toc-text">Step1 Model(Function Set)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step2-Goodness-of-Function"><span class="toc-number">4.</span> <span class="toc-text">Step2 Goodness of Function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Loss-Function"><span class="toc-number">4.1.</span> <span class="toc-text">Loss Function</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Step3-Gradient-Descent"><span class="toc-number">5.</span> <span class="toc-text">Step3 Gradient Descent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-simple-example-with-one-parameter"><span class="toc-number">5.1.</span> <span class="toc-text">A simple example with one parameter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-about-two-parameters"><span class="toc-number">5.2.</span> <span class="toc-text">How about two parameters?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-is-the-result"><span class="toc-number">6.</span> <span class="toc-text">How is the result?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Model-Selection"><span class="toc-number">6.1.</span> <span class="toc-text">Model Selection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Let%E2%80%99s-collect-more-data"><span class="toc-number">6.2.</span> <span class="toc-text">Let’s collect more data</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Back-to-step1-Redesign-the-Model"><span class="toc-number">6.2.1.</span> <span class="toc-text">Back to step1. Redesign the Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Back-to-step1-Redesign-the-Model-again"><span class="toc-number">6.2.2.</span> <span class="toc-text">Back to step1.Redesign the Model again</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.510Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/Lecture04-Classification/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/Lecture04-Classification/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.368Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/hello-world/" title="Hello World"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/01/14/hello-world/" title="Hello World">Hello World</a><time datetime="2022-01-14T09:41:22.228Z" title="Created 2022-01-14 17:41:22">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture03:Gradient Descent"/></a><div class="content"><a class="title" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent">Lecture03:Gradient Descent</a><time datetime="2021-10-31T11:31:41.000Z" title="Created 2021-10-31 19:31:41">2021-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture02:What does the error come from?"/></a><div class="content"><a class="title" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?">Lecture02:What does the error come from?</a><time datetime="2021-10-30T01:10:35.000Z" title="Created 2021-10-30 09:10:35">2021-10-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Cez</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'AFFpPVv6q27mJ2Av0J8NNxkK-gzGzoHsz',
+      appKey: '1wYn7zauwzC3BNIJHMtij9EP',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

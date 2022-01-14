@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C | C</title><meta name="keywords" content="相信自己o o"><meta name="author" content="Cez"><meta name="copyright" content="Cez"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在Classification这件事中，我们要找的是一个function，它的input是object x，它的output的是它输入哪一个class。这样的task有很多的application：      credit scoring  Input: income, savings, profession, age, past financial  history   Output: acc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C">
+<meta property="og:url" content="http://example.com/2022/01/14/Lecture04-Classification/index.html">
+<meta property="og:site_name" content="C">
+<meta property="og:description" content="在Classification这件事中，我们要找的是一个function，它的input是object x，它的output的是它输入哪一个class。这样的task有很多的application：      credit scoring  Input: income, savings, profession, age, past financial  history   Output: acc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2022-01-14T09:47:26.368Z">
+<meta property="article:modified_time" content="2021-11-03T14:33:37.422Z">
+<meta property="article:author" content="Cez">
+<meta property="article:tag" content="相信自己o o">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg"><link rel="canonical" href="http://example.com/2022/01/14/Lecture04-Classification/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-03 22:33:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="C" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">C</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">No title</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-01-14T09:47:26.368Z" title="Created 2022-01-14 17:47:26">2022-01-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-11-03T14:33:37.422Z" title="Updated 2021-11-03 22:33:37">2021-11-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><ul>
+<li><p>在Classification这件事中，我们要找的是一个function，它的input是object x，它的output的是它输入哪一个class。这样的task有很多的application：    </p>
+<ul>
+<li><p>credit scoring</p>
+<ul>
+<li><p>Input: income, savings, profession, age, past financial </p>
+<p>history </p>
+</li>
+<li><p>Output: accept or refuse</p>
+</li>
+</ul>
+</li>
+<li><p>Medical Dignosis</p>
+<ul>
+<li><p>Input: current symptoms, age, gender, past medical </p>
+<p>history …</p>
+</li>
+<li><p>Output: which kind of diseases</p>
+</li>
+</ul>
+</li>
+<li><p>Handwritten character recognition</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103193708905.png" alt="image-20211103193708905"></p>
+</li>
+<li><p>Face recgonition</p>
+<ul>
+<li>input：image of a face,output:person</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Example-Application"><a href="#Example-Application" class="headerlink" title="Example Application"></a>Example Application</h1><p>pokemon有18种属性，我们要做的是一个分类问题，这个问题是找一个function，input某一支pokemon，output是这一支pokemon属于哪一个type。</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103193751314.png" alt="image-20211103193751314"></p>
+<ul>
+<li><p>第一个问题是如何把一个pokemon当做一个function的input，想当成function的input，我们必须把它数值化。</p>
+<p>一支宝可梦其实可以用一组数字来描述它的特性，如下图(黄色是皮卡丘对应的数值)</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103193959257.png" alt="image-20211103193959257"></p>
+<p>所以一支宝可梦，我们就可以<strong>用一个7个数字所组成的vector来描述它</strong></p>
+<p>Can we predict the “type” of pokemon based on the information?</p>
+</li>
+</ul>
+<h1 id="How-to-do-Classification"><a href="#How-to-do-Classification" class="headerlink" title="How to do Classification?"></a>How to do Classification?</h1><ul>
+<li><p>Training data for Classification</p>
+<p>$(x^1,\hat y^1)$</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103194331457.png" alt="image-20211103194331457"></p>
+</li>
+<li><p>Classification as Regression?</p>
+<p>我们以binary classification当做一个例子：</p>
+<p>Training: Class 1 means the target is 1; Class 2 means the target is -1</p>
+<p>Testing: closer to 1 → class 1; closer to -1 → class 2</p>
+<ul>
+<li><p>如果我们今天用一个linear的model，真的找出来$b,w_1,w_2$，那我们会发现说$b+w_1x_1+w_2x_2$等于$0$的线是下图绿色的这一条。这在左图中看起来还是蛮不错的；</p>
+</li>
+<li><p>但是我们可能会遇到糟糕的问题：假设我们今天Class1的分布不是左边这样。</p>
+</li>
+<li><p>我们考虑右图Class1的分布：如果我们用绿色的线所代表的model：左上角的output&lt;0，右下角的output&gt;0；绿色的线会有什么问题呢？越偏右下,它的值是远大于1的；所以用绿色的这个model做regression的时候，右下角的这些点output是远大于1的。<strong>但是如果我们用regression的话我们会希望蓝色的点越接近1越好。</strong>所以对于regression来说，这些远大于1的点是error的，是不好的。</p>
+</li>
+<li><p>虽然我们用眼睛直接看绿色这条线是比较好的，但是如果我们硬用regression做下去的话，其实会得到的是紫色这一条；因为model会觉得说，我把绿色的线往右偏一点，最右下角的蓝色的点的值就不会那么大了，会稍微接近1，对regression来说是比较好的function。但是这样减小了error，对classification来说却是很糟糕的，所以regression对model好坏的定义对classification是不适用的。</p>
+<p><strong>Regression penalize to the examples that are “too correct”</strong></p>
+</li>
+</ul>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103194634211.png" alt="image-20211103194634211"></p>
+<ul>
+<li>Multiple class: Class 1 means the target is 1; Class 2 means the target is 2; Class 3 means the target is 3 …… problematic;但是这样是有问题的，因为这样做的时候我们就假设了Class3和Class2是比较近的，Class2和Class1是比较近的，他们有某种关系，但是如果实际上这种关系并不存在的话，这样子当做regression处理，就没办法得到一个好的结果。</li>
+</ul>
+</li>
+</ul>
+<h1 id="Ideal-Alternatives"><a href="#Ideal-Alternatives" class="headerlink" title="Ideal Alternatives"></a>Ideal Alternatives</h1><h2 id="Function-Model"><a href="#Function-Model" class="headerlink" title="Function(Model)"></a>Function(Model)</h2><p>在Regression的时候，我们找一个function，它的output是real number；</p>
+<p>在Classification的时候，function的output是discrete的。想办法让model做到这件事情，一个可能的想法是：</p>
+<p>假如是binary classification，在我们要找的function $f$中内建一个function  $g$，当然我们希望$g$也是根据training data被找出来的；如果$g(x)&gt;0$，那就说$x$是class1，否则就是class2</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103201317669.png" alt="image-20211103201317669"></p>
+<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>那么在training的时候，如何定义我们的Loss呢？</p>
+<p>The number of times f get incorrect results on training data。</p>
+<p>$\displaystyle L(f)=\sum_n \delta(f(x^n)\ne \hat y^n)$</p>
+<h2 id="Find-the-best-function"><a href="#Find-the-best-function" class="headerlink" title="Find the best function"></a>Find the best function</h2><p>Example: Perceptron, SVM(截止目前先不讲</p>
+<p>先讲另一个solution，这个solution也是跟ML的三个步骤是一样的，首先用概率的观点来看它。</p>
+<h1 id="Two-Boxes"><a href="#Two-Boxes" class="headerlink" title="Two Boxes"></a>Two Boxes</h1><p>Given一个蓝球，它是从Box1中来的概率：</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103201934162.png" alt="image-20211103201934162"></p>
+<h1 id="Two-Classes"><a href="#Two-Classes" class="headerlink" title="Two Classes"></a>Two Classes</h1><ul>
+<li><p>Two Boxes这个example和分类有什么关系呢？如果我们把盒子换成分类的话，把Box1和Box2换成类别1和类别2，这时候给我们一个x，它从某一个class里面sample出来的概率是多少呢？</p>
+<p>我们需要知道从class1里面抽出一个$x$的概率$P(C_1)$，从class2抽出一个$x$的概率$P(C_2)$；要知道从class1里面抽一个x时，抽出的是我们现在考虑的这个x的概率$P(x|C_1)$；从class1里面抽一个x时，抽出的是我们现在考虑的这个x的概率$P(x|C_2)$</p>
+<p>如果有上面4个数值，那我们就能计算出$x$是从class1抽出来的概率$P(C_1|x)$</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103203352743.png" alt="image-20211103203352743"></p>
+<p>所以现在的问题是，如果我们知道这4个数值，问题就解决了，给我一个宝可梦x，我们就可以看，它从哪一个class来的概率最大，概率最大的class就是正确答案</p>
+<p>但是现在问题是如果我们要算$P(C_1|x)$，我们就要算4个值，这4个值怎么来呢？<strong>我们就希望从我们的training data，把这4个值估算出来。</strong></p>
+<p>这一整套的想法，就叫做Generative Model </p>
+<p>为什么叫generative model？因为有这个model，我们就可以拿它来generate一个x：我们可以计算某一个x出现的概率，如果我们可以计算每一个x出现的概率，我们就知道x的distribution，就可以用这个distribution来产生x，sample x出来。这个概率是什么呢？就是$𝑃(𝑥) = 𝑃 (𝑥|𝐶1) 𝑃 (𝐶_1) + 𝑃 (𝑥|𝐶_2) 𝑃 (𝐶_2)$</p>
+</li>
+</ul>
+<h1 id="Prior"><a href="#Prior" class="headerlink" title="Prior"></a>Prior</h1><p>首先来算一下$P(C_1)$和$P(C_2)$。</p>
+<p>假设我们今天考虑的两个class分别是water和normal。class1指的就是water系的宝可梦，normal指的就是normal的宝可梦；(其他16种先无视掉</p>
+<p>Water and Normal type with ID &lt; 400 for training, rest for testing</p>
+<p>Training: 79 Water, 61 Normal</p>
+<p>很显然，根据training data：$P(C1 ) = 79 / (79 + 61) =0.56$，$P(C2 ) = 61 / (79 + 61) =0.44$</p>
+<h2 id="Probability-from-Class"><a href="#Probability-from-Class" class="headerlink" title="Probability from Class"></a>Probability from Class</h2><p>怎么计算给我某一个class，某一支未知的宝可梦是从这个class sample出来的概率$P(x|C_1)=?$</p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103204805317.png" alt="image-20211103204805317"></p>
+<p><img src="D:/typora%E5%9B%BE%E7%89%87/image-20211103204321162.png" alt="image-20211103204321162"></p>
+<p>很疑惑的一点是：我们的training data里面没有这个宝可梦啊，那从这个class sample出来这支宝可梦的概率不应该是0吗</p>
+<p>我们首先考虑，<strong>Each Pokémon is represented as a vector by its attribute.</strong> </p>
+<p>(一堆的feature)</p>
+<h2 id="Probability-from-Class-Feature"><a href="#Probability-from-Class-Feature" class="headerlink" title="Probability from Class - Feature"></a>Probability from Class - Feature</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Cez</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2022/01/14/Lecture04-Classification/">http://example.com/2022/01/14/Lecture04-Classification/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/01/14/hello-world/"><img class="next-cover" src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Hello World</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Cez</div><div class="author-info__description">双子座</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Example-Application"><span class="toc-number">1.</span> <span class="toc-text">Example Application</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-do-Classification"><span class="toc-number">2.</span> <span class="toc-text">How to do Classification?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ideal-Alternatives"><span class="toc-number">3.</span> <span class="toc-text">Ideal Alternatives</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Model"><span class="toc-number">3.1.</span> <span class="toc-text">Function(Model)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Loss-function"><span class="toc-number">3.2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Find-the-best-function"><span class="toc-number">3.3.</span> <span class="toc-text">Find the best function</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Two-Boxes"><span class="toc-number">4.</span> <span class="toc-text">Two Boxes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Two-Classes"><span class="toc-number">5.</span> <span class="toc-text">Two Classes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Prior"><span class="toc-number">6.</span> <span class="toc-text">Prior</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Probability-from-Class"><span class="toc-number">6.1.</span> <span class="toc-text">Probability from Class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Probability-from-Class-Feature"><span class="toc-number">6.2.</span> <span class="toc-text">Probability from Class - Feature</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.510Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/Lecture04-Classification/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/Lecture04-Classification/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.368Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/hello-world/" title="Hello World"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/01/14/hello-world/" title="Hello World">Hello World</a><time datetime="2022-01-14T09:41:22.228Z" title="Created 2022-01-14 17:41:22">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture03:Gradient Descent"/></a><div class="content"><a class="title" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent">Lecture03:Gradient Descent</a><time datetime="2021-10-31T11:31:41.000Z" title="Created 2021-10-31 19:31:41">2021-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture02:What does the error come from?"/></a><div class="content"><a class="title" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?">Lecture02:What does the error come from?</a><time datetime="2021-10-30T01:10:35.000Z" title="Created 2021-10-30 09:10:35">2021-10-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Cez</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'AFFpPVv6q27mJ2Av0J8NNxkK-gzGzoHsz',
+      appKey: '1wYn7zauwzC3BNIJHMtij9EP',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

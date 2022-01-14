@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Lecture02:What does the error come from? | C</title><meta name="keywords" content="相信自己o o"><meta name="author" content="Cez"><meta name="copyright" content="Cez"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Review A more complex model does not always lead to better performance on testing data.   error有两个来源，一个是bias(偏向、偏离)，一个是variance(方差、变化幅度)  如果我们可以诊断我们error的来源，我们就可以挑选适当的方法来improve我们的model   Estimator 在L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lecture02:What does the error come from?">
+<meta property="og:url" content="http://example.com/2021/10/30/Lecture02-What-does-the-error-come-from/index.html">
+<meta property="og:site_name" content="C">
+<meta property="og:description" content="Review A more complex model does not always lead to better performance on testing data.   error有两个来源，一个是bias(偏向、偏离)，一个是variance(方差、变化幅度)  如果我们可以诊断我们error的来源，我们就可以挑选适当的方法来improve我们的model   Estimator 在L">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-10-30T01:10:35.000Z">
+<meta property="article:modified_time" content="2021-10-30T03:04:50.034Z">
+<meta property="article:author" content="Cez">
+<meta property="article:tag" content="相信自己o o">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg"><link rel="canonical" href="http://example.com/2021/10/30/Lecture02-What-does-the-error-come-from/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Lecture02:What does the error come from?',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-30 11:04:50'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="C" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">C</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Lecture02:What does the error come from?</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-10-30T01:10:35.000Z" title="Created 2021-10-30 09:10:35">2021-10-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-10-30T03:04:50.034Z" title="Updated 2021-10-30 11:04:50">2021-10-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Lecture02:What does the error come from?"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h1><ul>
+<li><p>A more complex model does not always lead to better performance on <strong>testing data.</strong> </p>
+</li>
+<li><p>error有两个来源，一个是bias(偏向、偏离)，一个是variance(方差、变化幅度)</p>
+</li>
+<li><p>如果我们可以诊断我们error的来源，我们就可以挑选适当的方法来improve我们的model</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105524.png" alt="image-20211030091142312" style="zoom:67%;" /></li>
+</ul>
+<h1 id="Estimator"><a href="#Estimator" class="headerlink" title="Estimator"></a>Estimator</h1><ul>
+<li><p>在Lecture01中，我们找一个funciton，input是一个pokemon，output是它进化后的cp值，理论上一定有一个最优的function，我们写作$\hat f$；显然对于pokemon，只有Niantic公司知道hh。</p>
+</li>
+<li><p>我们只能从training data中找到一个$f^*$，这个$f^*$是对$\hat f$的一个estimator</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105525.png" alt="image-20211030091612543" style="zoom:50%;" /></li>
+</ul>
+<h2 id="Bias-and-Variance-of-Estimator"><a href="#Bias-and-Variance-of-Estimator" class="headerlink" title="Bias and Variance of Estimator"></a>Bias and Variance of Estimator</h2><ul>
+<li><p>先考虑概率论与统计中的知识：</p>
+<ul>
+<li><p>Estimate the mean of a variable $x$</p>
+<ul>
+<li> assume the mean of x is 𝜇 </li>
+<li>assume the variance of x is $𝜎^2$</li>
+</ul>
+</li>
+<li><p>Estimator of mean $μ$</p>
+<ul>
+<li><p>Sample N points:${x^1,x^2,\dots,x^N}$，即我们随机取样N个点，然后取它们的平均值$m$，很大的可能是m并不会等于μ，但是我们可以继续做实验，取$m_1,m_2,…,m_6$等，则有$E[m]=μ$;所以就算我们今天找很多m，它们都不和μ一样，但是它们的期望值是正好等于μ的。所以用m来estimate μ，它是unbiased的。</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105526.png" alt="image-20211030092913060" style="zoom:50%;" />
+
+<blockquote>
+<p>就比如我们打靶，我们瞄准的是准心，但是由于其他风速等因素的干扰，所以我们打的点会散布在准心的周围。</p>
+</blockquote>
+<p>$\displaystyle m=\frac{1}{N}\sum_nx^n\ne μ$ ，</p>
+<p>$\displaystyle E[m]=E[\frac{1}{N}\sum_nx^n]=\frac{1}{N}\sum_nE[x^n]=μ$</p>
+</li>
+<li><p>散布在周围会散布得多开呢？这取决于Variance;而Variance取决于我们今天sample的值，如果我们取N很大的话，它的散布比较集中，如果只取比较少的N的话，它的散布就比较开</p>
+<p>$\displaystyle Var[m]=\frac{\sigma^2}{N}$</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105527.png" alt="image-20211030092645986" style="zoom:50%;" /></li>
+</ul>
+</li>
+<li><p>Estimator of variance $\sigma^2$</p>
+<ul>
+<li><p>Sample N points:${x^1,x^2,\dots,x^N}$</p>
+<p>$\displaystyle m=\frac{1}{N}\sum_nx^n$ </p>
+<p>$\displaystyle s^2=\frac{1}{N}\sum_n(x^n-m)^2$</p>
+<p><strong>Biased</strong> <strong>estimator</strong>。如果我们取期望的话我们发现$E[s^2]\ne\sigma^2$，但是如果我们的N取很大的话，那$\sigma^2$与$s^2$的估测间的误差就比较小</p>
+<p>$\displaystyle E[s^2]=\frac{N-1}{N}\sigma^2\ne \sigma^2$</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105528.png" alt="image-20211030093409899" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="问题回到Regression上："><a href="#问题回到Regression上：" class="headerlink" title="问题回到Regression上："></a>问题回到Regression上：</h1><p>以图中第四个点为例，我们现在要估测的是靶的中心，即$\hat f$；我们collect一些data，做一次实验，我们找出来的$f^*$在如图位置；error取决于两件事：</p>
+<ul>
+<li><strong>第一件事是我们瞄准的位置在哪里</strong>，就是说我们的estimator是不是bias的。怎么知道是不是bias的呢？假设我们可以做好多次实验，它们的散布是这些蓝色的点，我们把期望值算出来，$E[f^*]=\bar f$;<strong>所以我们的estimator和靶心之间是有一段距离的，这就是Bias</strong>，我们瞄的时候就没有瞄准  </li>
+<li>还有一个error是，我们瞄准了$\bar f$，但是<strong>子弹射出去后还是会有偏移的</strong>，所以每次找到的$f^*$是不一样的，<strong>而$f*与期望值\bar f$之间的距离就是variance</strong>。</li>
+</ul>
+<p>所以最理想的情况是我们同时没有bias，variance又比较小。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105529.png" alt="image-20211030093527647"></p>
+<ul>
+<li><p>但是经过上节课的学习我们知道，其实我们就做了一次实验，收集了10笔data，得到一个$f^*$，然后就结束了，我们怎么得到很多的$f^*$呢？怎么知道variance和bias有多大呢？</p>
+<ul>
+<li><p>Parallel Universe </p>
+<p>假设有Parallel Universe，我们在每一个Parallel Universe中都抓Pokemon做实验。</p>
+<ul>
+<li>In all the universes, we are collecting (catching) 10 Pokémons as training data to find $f^*$</li>
+</ul>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105530.png" alt="image-20211030094520266" style="zoom:67%;" />
+
+<ul>
+<li><p>In different universes, we use the same model, but obtain different $𝑓^*$，假设model都是$y=b+w\cdot x_{cp}$</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105531.png" alt="image-20211030094657274" style="zoom:67%;" /></li>
+</ul>
+</li>
+<li><p>$f^*$ in 100 Universes（其实真正要做的话就是每次抓10只不同pokemon，然后做100次实验，怎么会有parallel universe呢）</p>
+<p>model是$y=b+w\cdot x_{cp}$:</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105532.png" alt="image-20211030094842692" style="zoom:50%;" />
+
+<p>model是$y = b + w_1\cdot x_{cp} + w_2\cdot  (x_{cp})^2 + w_3\cdot (x_{cp})^3$：</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105533.png" alt="image-20211030094954695" style="zoom:50%;" />
+
+<p>model是$y = b + w_1\cdot x_{cp} + w_2\cdot  (x_{cp})^2 + w_3\cdot (x_{cp})^3+w_4\cdot (x_{cp})^4+w_5\cdot (x_{cp}^5)$：</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105534.png" alt="image-20211030095053560" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+<h2 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h2><ul>
+<li>对于简单的Model，如只考虑一次的Model，它是比较集中的，如果考虑五次的话，它的散布就非常地广；所以对于简单的Model，它的Variance是比较小的；就好像说我们在射击的时候，每次射击的位置都是差不多的，每次找出来的直线，最好的function $f^*$都是差不多的。</li>
+<li>但是对于复杂的Model，它的散布是比较开的，它的Variance是比较大的  </li>
+</ul>
+<ul>
+<li><p>为什么简单的Model会有Small Variance，复杂的Model会有Large Variance呢？   </p>
+<p><strong>简单的model它比较不会受到data的影响</strong>，我们考虑最极端的情况，model是$f(x)=c$，这时候就算我们随便找多少个pokemon，它通通都是一样的，variance=0；随着model越来越复杂，variance就越来越大。</p>
+</li>
+</ul>
+<h2 id="Bias"><a href="#Bias" class="headerlink" title="Bias"></a>Bias</h2><p>​        $E[f^*]=\bar f$</p>
+<ul>
+<li><p>Bias:If we average all the $f^*$，is it close to $\hat f$？ </p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105535.png" alt="image-20211030095716059" style="zoom:50%;" />
+
+<p>因为我们并不知道在pokemon这个例子中的$\hat f$，所以就假设一个</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105536.png" alt="image-20211030095826578" style="zoom:50%;" /></li>
+</ul>
+<p>下图按照从上到下、从左到右的顺序为：一次式、三次式、五次式的情况</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105537.png" alt="image-20211030095927222"></p>
+<ul>
+<li><p>所以如果是一个比较简单的model，它有比较大的bias；一个复杂的model，虽然它每次找出来的$f^*$都不一样，但它有比较小的bias。</p>
+<ul>
+<li><p>为什么会这样呢？我们说一个model就是一个function set，那我们就用一个范围来表示function set，当我们定下来一个model的时候，我们就已经设定好了：我们最好的function就只能从function set中挑选出来。</p>
+<p>当我们用一次式的时候，model的范围是比较小的，可能target压根不在范围里；用五次式的时候，model范围是比较大的，所以因为training data太少，training data每次都不一样，所以每次的$f^*$都不一样，但是它们都是散布在target附近的，所以平均起来就可以得到$\bar f$接近于target。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105538.png" alt="image-20211030100208247"></p>
+</li>
+</ul>
+<h2 id="Bias-vs-Variance"><a href="#Bias-vs-Variance" class="headerlink" title="Bias vs Variance"></a>Bias vs Variance</h2><p> 随着我们挑选的model越来越复杂，bias越来越小，但是variance会越来越大，我们要做的就是找到一个平衡点，bias和variance都合适。    </p>
+<p><strong>如果bias很大 这就是$Underfitting$</strong></p>
+<p><strong>如果variance很大 这就是$Overfitting$</strong></p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105539.png" alt="image-20211030100711802"></p>
+<h2 id="What-to-do-with-large-bias"><a href="#What-to-do-with-large-bias" class="headerlink" title="What to do with large bias?"></a>What to do with large bias?</h2><ul>
+<li><p>Diagnosis:</p>
+<ul>
+<li><p>如果我们的model没有办法fit我们的training data,那就说明我们的bias是大的，此时就是Underfitting。</p>
+<img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105540.png" alt="image-20211030100958074" style="zoom: 80%;" /></li>
+<li><p>如果我们可以fit我们的training data，但是在testing data上却有很大的error，那么很有可能variance比较大，造成了overfitting。</p>
+</li>
+</ul>
+</li>
+<li><p>如果bias很大，redesign我们的model！因为我们的model中可能不包含target。</p>
+<ul>
+<li>Add more features as input</li>
+<li>A more complex model</li>
+</ul>
+<p>我们可能会说，那我们可以collect更多data啊，但这是没用的，因为我们的function set就很烂啦，再找更多data也不会有帮助.</p>
+</li>
+</ul>
+<h2 id="What-to-do-with-large-variance"><a href="#What-to-do-with-large-variance" class="headerlink" title="What to do with large variance?"></a>What to do with large variance?</h2><ul>
+<li><p>More data</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105541.png" alt="image-20211030103243050"></p>
+<p>增加data是一个很有效控制variance的办法，它也不会伤害bias，但是问题是我们在实际中不一定能collect更多data。但是可以自己人为做data augmentation;比如在影像辨识中，可以做rotate等操作。</p>
+</li>
+<li><p>Regularization </p>
+<p>使curve更加平滑，但是可能会伤害bias，因为我们调整了function space，只包含那些平滑的曲线，所以可能$\hat f$不在function set中。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105542.png" alt="image-20211030103633280"> </p>
+</li>
+</ul>
+<h1 id="Model-Selection"><a href="#Model-Selection" class="headerlink" title="Model Selection"></a>Model Selection</h1><ul>
+<li><p>There is usually a trade-off between bias and variance.</p>
+</li>
+<li><p>Select a model that balances two kinds of error to minimize total error</p>
+</li>
+<li><p>What we should not do：</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105543.png" alt="image-20211030104020089">    </p>
+<p>就是说我们有training set和testing set，接下来我们有model1、model2、model3，在training set上我们可以分别找到一个best funciton，它在testing set上对应error值，model3的error最小；</p>
+<p>但是可能的问题是：这个testing set是我们手头上的testing set，它并不是真正的testing set(比如我们把cp值预测系统放到网络上给大家用，新进来的data是从来没有看过的) 。</p>
+<p>所以我们拿testing set来选这个最好的model的时候，它在真正的testing set上不一定是最好的model。手头上的这个testing set是有bias的(这里老师并没有解释地很清楚，我的理解是 它与traing set是有一定关系的，没有办法真实反映出在实际中发生的状况。。) </p>
+</li>
+</ul>
+<ul>
+<li><p>拿Homework来举例</p>
+<p>我们手上有Training set和testing set。其中public set是可以看到的，private set是看不到的。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030105544.png" alt="image-20211030104541102"></p>
+</li>
+</ul>
+<p>怎么做才是可靠的呢？    </p>
+<p>↓</p>
+<h1 id="Cross-Validation"><a href="#Cross-Validation" class="headerlink" title="Cross Validation"></a>Cross Validation</h1><ul>
+<li><p>我们可以把training set分为两组，一组training set，真正用来train model；另一组validation set用来选model。这样我们train出一个最好的model，比如是model3；但是我们可能感觉这样的话training data变少了，我们可以这样做：我们已经决定model3是最好的model，那我们就定住用model3，但是用全部的data在model3再train一次。</p>
+</li>
+<li><p>这时候如果我们把model3 apply到testing set(public)上，虽然error&gt;0.5，比较大，但是这时候才能真正反映出在private set上的error。</p>
+</li>
+<li><p>不推荐的是用public set上的error表现再返回去搞Model，因为这样的话我们又把public set中的bias考虑进去了。这样就变成我们在public set中的performance没办法反映private set了。 </p>
+</li>
+</ul>
+<p>如果说这个validation set也有怪怪的bias，我们可以用N-fold Cross Validation</p>
+<h1 id="N-fold-Cross-Validation"><a href="#N-fold-Cross-Validation" class="headerlink" title="N-fold Cross Validation"></a>N-fold Cross Validation</h1><p>如果我们不相信某一次train跟test的结果的话，我么就分很多种不同的情形</p>
+<p>比如我们做3-fold的cross validation，意思就是我们把training set分成3份，每一次拿其中一份当做validation set，另外两份做training；</p>
+<p>然后我们在三种情形下，三个model通通算error，最后算average error，最后得到的average error最小的model1，用model1再在整个的trainging set上train一遍，然后再去test在testing set上。</p>
+<p><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20211030110013.png" alt="image-20211030105904182"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Cez</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/10/30/Lecture02-What-does-the-error-come-from/">http://example.com/2021/10/30/Lecture02-What-does-the-error-come-from/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/31/Lecture03-Gradient-Descent/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Lecture03:Gradient Descent</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/29/Lecture01-Additional-Regression-Demo/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Lecture01 Additional:Regression Demo</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Cez</div><div class="author-info__description">双子座</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Review"><span class="toc-number">1.</span> <span class="toc-text">Review</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Estimator"><span class="toc-number">2.</span> <span class="toc-text">Estimator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bias-and-Variance-of-Estimator"><span class="toc-number">2.1.</span> <span class="toc-text">Bias and Variance of Estimator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%9B%9E%E5%88%B0Regression%E4%B8%8A%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">问题回到Regression上：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Variance"><span class="toc-number">3.1.</span> <span class="toc-text">Variance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bias"><span class="toc-number">3.2.</span> <span class="toc-text">Bias</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bias-vs-Variance"><span class="toc-number">3.3.</span> <span class="toc-text">Bias vs Variance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-to-do-with-large-bias"><span class="toc-number">3.4.</span> <span class="toc-text">What to do with large bias?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-to-do-with-large-variance"><span class="toc-number">3.5.</span> <span class="toc-text">What to do with large variance?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Model-Selection"><span class="toc-number">4.</span> <span class="toc-text">Model Selection</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cross-Validation"><span class="toc-number">5.</span> <span class="toc-text">Cross Validation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#N-fold-Cross-Validation"><span class="toc-number">6.</span> <span class="toc-text">N-fold Cross Validation</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4Selection/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.510Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/Lecture04-Classification/" title="No title"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="No title"/></a><div class="content"><a class="title" href="/2022/01/14/Lecture04-Classification/" title="No title">No title</a><time datetime="2022-01-14T09:47:26.368Z" title="Created 2022-01-14 17:47:26">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/14/hello-world/" title="Hello World"><img src="https://gitee.com/Cezzz/image2_repo/raw/master/img/20220114172154.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/01/14/hello-world/" title="Hello World">Hello World</a><time datetime="2022-01-14T09:41:22.228Z" title="Created 2022-01-14 17:41:22">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture03:Gradient Descent"/></a><div class="content"><a class="title" href="/2021/10/31/Lecture03-Gradient-Descent/" title="Lecture03:Gradient Descent">Lecture03:Gradient Descent</a><time datetime="2021-10-31T11:31:41.000Z" title="Created 2021-10-31 19:31:41">2021-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lecture02:What does the error come from?"/></a><div class="content"><a class="title" href="/2021/10/30/Lecture02-What-does-the-error-come-from/" title="Lecture02:What does the error come from?">Lecture02:What does the error come from?</a><time datetime="2021-10-30T01:10:35.000Z" title="Created 2021-10-30 09:10:35">2021-10-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Cez</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'AFFpPVv6q27mJ2Av0J8NNxkK-gzGzoHsz',
+      appKey: '1wYn7zauwzC3BNIJHMtij9EP',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
